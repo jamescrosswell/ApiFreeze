@@ -2,7 +2,6 @@ using System.Globalization;
 using ApiFreeze;
 using OpenTelemetry.Trace;
 using Quartz;
-using Sentry.AspNetCore;
 using Sentry.OpenTelemetry;
 using Serilog;
 using Serilog.Events;
@@ -44,9 +43,8 @@ builder.WebHost
 
         options.SendDefaultPii = true;
         options.TracesSampleRate = 1.0f;
-        // options.ProfilesSampleRate = 1.0f;
+        options.ProfilesSampleRate = 1.0f;
 
-        // options.AddDiagnosticSourceIntegration();
         options.UseOpenTelemetry();
 
         options.ExperimentalMetrics = new ExperimentalMetricsOptions
@@ -54,7 +52,7 @@ builder.WebHost
             EnableCodeLocations = true,
             CaptureSystemDiagnosticsMeters = BuiltInSystemDiagnosticsMeters.All
         };
-        // options.AddIntegration(new ProfilingIntegration());
+        options.AddIntegration(new ProfilingIntegration());
     });
 
 builder.Services.AddQuartz(configurator =>
